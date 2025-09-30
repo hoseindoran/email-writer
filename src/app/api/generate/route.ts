@@ -1,10 +1,16 @@
 import { NextRequest } from "next/server";
 import { google } from "@ai-sdk/google";
 import { streamText } from "ai";
+import { auth } from "@/lib/auth";
 
 export const runtime = "edge";
 
 export async function POST(req: NextRequest) {
+  const session = await auth();
+  if (!session?.user) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
   try {
     const { prompt, tone, length, purpose } = await req.json();
 
