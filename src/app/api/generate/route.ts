@@ -3,7 +3,7 @@ import { google } from "@ai-sdk/google";
 import { streamText } from "ai";
 import { auth } from "@/lib/auth";
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
 export async function POST(req: NextRequest) {
   const session = await auth();
@@ -17,13 +17,21 @@ export async function POST(req: NextRequest) {
     const model = google("gemini-2.5-flash");
 
     const systemPrompt = `
-You are an AI email assistant.
-Generate an email with these details:
-- Prompt: ${prompt}
-- Tone: ${tone}
-- Length: ${length}
-- Purpose: ${purpose}
-`;
+      You are an AI email assistant.
+      Generate the full email as **semantic HTML**.
+      Use only safe tags:
+      - <h1>, <h2> for headings
+      - <p> for paragraphs
+      - <ul>, <ol>, <li> for lists
+      - <strong>, <em> for emphasis
+      - <a href=""> for links
+
+      Details:
+      - Prompt: ${prompt}
+      - Tone: ${tone}
+      - Length: ${length}
+      - Purpose: ${purpose}
+    `;
 
     const response = streamText({
       model,
@@ -32,7 +40,11 @@ Generate an email with these details:
         console.error(error);
       },
     });
-    return response.toTextStreamResponse();
+    return response.toTextStreamResponse({
+      headers: {
+        "Content-Type": "text/html; charset=utf-8",
+      },
+    });
   } catch (error) {
     console.error("Gemini streaming error:", error);
     return new Response("Internal Server Error", { status: 500 });
