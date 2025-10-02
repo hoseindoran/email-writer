@@ -1,4 +1,6 @@
 "use client";
+import { signOut, useSession } from "next-auth/react";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +14,6 @@ import {
   SidebarMenuItem,
 } from "./ui/sidebar";
 import { ChevronUp, User2 } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
 
 const AppSidebarFooter = () => {
   const { data: session } = useSession();

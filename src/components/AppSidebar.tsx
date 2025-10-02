@@ -1,4 +1,8 @@
 import React, { Suspense } from "react";
+import Link from "next/link";
+
+import EmailHistory from "./EmailHistory";
+import AppSidebarFooter from "./AppSidebarFooter";
 
 import {
   Sidebar,
@@ -13,10 +17,6 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Loader, SquarePen } from "lucide-react";
-import Link from "next/link";
-
-import EmailHistory from "./EmailHistory";
-import AppSidebarFooter from "./AppSidebarFooter";
 
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
   return (

@@ -1,10 +1,9 @@
 "use client";
 
-import PromptForm from "@/components/PromptForm";
 import { useState } from "react";
-import { signIn, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
-import "@blocksuite/presets/themes/affine.css";
+import { signIn, useSession } from "next-auth/react";
+import PromptForm from "@/components/PromptForm";
 
 const BlockSuiteEditor = dynamic(
   () => import("../components/BlockSuiteEditor"),

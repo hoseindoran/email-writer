@@ -12,3 +12,14 @@ export async function getUserEmails() {
 
   return user?.emails ?? [];
 }
+
+export async function getEmail(id: string) {
+  const session = await auth();
+  if (!session?.user?.email) return [];
+
+  const email = await db.email.findFirst({
+    where: { id: id },
+  });
+
+  return email ?? null;
+}

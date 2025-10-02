@@ -1,18 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
 import AppSidebar from "@/components/AppSidebar";
 import MainProviders from "@/providers/MainProviders";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import "./globals.css";
+import "@blocksuite/presets/themes/affine.css";
 
 export const metadata: Metadata = {
   title: "Email Writer",

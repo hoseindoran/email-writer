@@ -10,6 +10,7 @@ import { getUserEmails } from "@/lib/actions/emailActions";
 interface Email {
   id: string;
   title: string;
+  content: string;
   createdAt: Date;
 }
 
@@ -28,7 +29,7 @@ export default async function EmailHistory() {
         {emails.map((email) => (
           <SidebarMenuItem key={email.id}>
             <SidebarMenuButton asChild>
-              <Link href={`/emails/${email.id}`}>
+              <Link href={`/email/${email.id}`}>
                 <span>{email.title}</span>
               </Link>
             </SidebarMenuButton>
