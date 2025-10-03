@@ -8,7 +8,13 @@ export async function getUserEmails() {
 
     const user = await db.user.findUnique({
       where: { email: session.user.email },
-      include: { emails: true },
+      include: {
+        emails: {
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
+      },
     });
 
     return user?.emails ?? [];

@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await auth(); // get logged-in user
+    const session = await auth();
     if (!session?.user?.email) {
       return new Response("Unauthorized", { status: 401 });
     }

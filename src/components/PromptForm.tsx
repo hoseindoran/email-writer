@@ -61,6 +61,10 @@ export default function PromptForm({ onGenerate }: PromptFormProps) {
 
       if (!res.body) throw new Error("No response body");
 
+      const title = decodeURIComponent(
+        res.headers.get("X-Email-Title") || "Untitled Email"
+      );
+
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let fullText = "";
@@ -73,7 +77,7 @@ export default function PromptForm({ onGenerate }: PromptFormProps) {
         fullText += chunk;
         onGenerate(fullText); // update canvas progressively
       }
-      handleSave(fullText);
+      await handleSave(title, fullText);
     } catch (err) {
       console.error(err);
       onGenerate("❌ Error generating email. Please try again.");
@@ -82,14 +86,16 @@ export default function PromptForm({ onGenerate }: PromptFormProps) {
     }
   };
 
-  const handleSave = async (content: string) => {
-    const generatedTitle = content.split("\n")[0] || "Untitled Email";
+  const handleSave = async (title: string, content: string) => {
     try {
-      await fetch("/api/emails", {
+      const res = await fetch("/api/emails", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: generatedTitle, content }),
+        body: JSON.stringify({ title, content }),
       });
+      if (!res.ok) throw new Error("Failed to save email");
+      const savedEmail = await res.json();
+      return savedEmail;
     } catch (err) {
       console.error("Failed to save email:", err);
     }
