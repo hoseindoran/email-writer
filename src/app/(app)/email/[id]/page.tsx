@@ -1,6 +1,7 @@
 import BlockSuiteWrapper from "@/components/BlockSuite/BlocksuiteWrapper";
 import { getEmail } from "@/lib/actions/emailActions";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({
   params,
@@ -24,6 +25,6 @@ export default async function Email({
   const { id } = await params;
   const email = await getEmail(id);
 
-  if (!email) return <div>email not found</div>;
+  if (!email) notFound();
   return <BlockSuiteWrapper emailContent={email.content} />;
 }
