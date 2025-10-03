@@ -32,7 +32,9 @@ const AppSidebarFooter = () => {
               side="top"
               className="w-[--radix-popper-anchor-width]"
             >
-              <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })}>
+              <DropdownMenuItem
+                onClick={() => signOut({ callbackUrl: "/signin" })}
+              >
                 <span>Logout</span>
               </DropdownMenuItem>
             </DropdownMenuContent>

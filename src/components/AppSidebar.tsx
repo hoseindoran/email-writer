@@ -21,7 +21,7 @@ import { Loader, SquarePen } from "lucide-react";
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
   return (
     <Sidebar {...props} collapsible="icon">
-      <SidebarHeader className="flex flex-row justify-between items-center">
+      <SidebarHeader className="flex flex-row justify-end items-center">
         <SidebarTrigger />
       </SidebarHeader>
       <SidebarContent>

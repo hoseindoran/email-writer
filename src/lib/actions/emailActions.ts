@@ -2,24 +2,33 @@ import { db } from "@/lib/db";
 import { auth } from "@/lib/auth";
 
 export async function getUserEmails() {
-  const session = await auth();
-  if (!session?.user?.email) return [];
+  try {
+    const session = await auth();
+    if (!session?.user?.email) return [];
 
-  const user = await db.user.findUnique({
-    where: { email: session.user.email },
-    include: { emails: true },
-  });
+    const user = await db.user.findUnique({
+      where: { email: session.user.email },
+      include: { emails: true },
+    });
 
-  return user?.emails ?? [];
+    return user?.emails ?? [];
+  } catch (error) {
+    console.error("Error fetching user emails:", error);
+    return [];
+  }
 }
 
 export async function getEmail(id: string) {
-  const session = await auth();
-  if (!session?.user?.email) return [];
+  try {
+    const session = await auth();
+    if (!session?.user?.email) return null;
 
-  const email = await db.email.findFirst({
-    where: { id: id },
-  });
-
-  return email ?? null;
+    const email = await db.email.findFirst({
+      where: { id },
+    });
+    return email ?? null;
+  } catch (error) {
+    console.error("Error fetching email:", error);
+    return null;
+  }
 }

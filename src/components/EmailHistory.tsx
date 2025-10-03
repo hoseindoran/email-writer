@@ -1,13 +1,12 @@
-import Link from "next/link";
+import SidebarItem from "./SidebarItem";
 import {
   SidebarGroupContent,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
 } from "./ui/sidebar";
 import { getUserEmails } from "@/lib/actions/emailActions";
 
-interface Email {
+export interface Email {
   id: string;
   title: string;
   content: string;
@@ -16,7 +15,6 @@ interface Email {
 
 export default async function EmailHistory() {
   const emails: Email[] = await getUserEmails();
-
   return (
     <SidebarGroupContent>
       <SidebarMenu>
@@ -27,13 +25,7 @@ export default async function EmailHistory() {
         )}
 
         {emails.map((email) => (
-          <SidebarMenuItem key={email.id}>
-            <SidebarMenuButton asChild>
-              <Link href={`/email/${email.id}`}>
-                <span>{email.title}</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+          <SidebarItem email={email} key={email.id} />
         ))}
       </SidebarMenu>
     </SidebarGroupContent>
