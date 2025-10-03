@@ -38,8 +38,10 @@ Before you begin, ensure you have the following installed:
 
 1. **Clone the repository**
 
+Clone from [GitHub](https://github.com/hoseindoran/email-writer):
+
 ```bash
-git clone [https://github.com/hoseindoran/email-writer.git](email-writer)
+git clone https://github.com/hoseindoran/email-writer.git
 cd email-writer
 ```
 
