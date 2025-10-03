@@ -9,7 +9,7 @@ export default function Home() {
 
   return (
     <main className="h-full flex flex-col w-xl">
-      <div className="flex-grow py-4">
+      <div className="flex-grow pb-4">
         <BlockSuiteWrapper emailContent={emailContent} />
       </div>
       <PromptForm onGenerate={setEmailContent} />

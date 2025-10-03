@@ -18,8 +18,6 @@ export default function BlockSuiteWrapper({
   };
 
   return (
-    <div className="w-2xl">
-      <BlockSuiteEditor content={emailContent} onChange={handleContentChange} />
-    </div>
+    <BlockSuiteEditor content={emailContent} onChange={handleContentChange} />
   );
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { AffineEditorContainer } from "@blocksuite/presets";
-import { DocCollection, Schema } from "@blocksuite/store";
+import { Doc, DocCollection, Schema, type Block } from "@blocksuite/store";
 import { AffineSchemas } from "@blocksuite/blocks";
 
 interface BlockSuiteEditorProps {
@@ -21,7 +21,7 @@ function stripCodeBlock(content: string): string {
 interface BlockData {
   type: string;
   text: string;
-  props?: any;
+  props?: Record<string, unknown>;
 }
 
 function parseHTMLToBlocks(html: string): BlockData[] {
@@ -154,13 +154,21 @@ function parseHTMLToBlocks(html: string): BlockData[] {
   return blocks;
 }
 
+interface ParagraphBlock {
+  id: string;
+  flavour: string;
+  text?: {
+    toString: () => string;
+  };
+}
+
 export default function BlockSuiteEditor({
   content = "",
   onChange,
 }: BlockSuiteEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
   const editorInstanceRef = useRef<AffineEditorContainer | null>(null);
-  const docRef = useRef<any>(null);
+  const docRef = useRef<Doc | null>(null);
   const noteBlockIdRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -195,9 +203,11 @@ export default function BlockSuiteEditor({
     if (onChange) {
       doc.slots.blockUpdated.on(() => {
         try {
-          const blocks = doc.getBlocksByFlavour("affine:paragraph");
+          const blocks = doc.getBlocksByFlavour(
+            "affine:paragraph"
+          ) as ParagraphBlock[];
           const textContent = blocks
-            .map((block: any) => block.text?.toString() || "")
+            .map((block) => block.text?.toString() || "")
             .join("\n");
           onChange(textContent);
         } catch (error) {
@@ -223,7 +233,7 @@ export default function BlockSuiteEditor({
         editorInstanceRef.current = null;
       }
     };
-  }, []);
+  }, [content, onChange]);
 
   useEffect(() => {
     if (!docRef.current || !noteBlockIdRef.current || !content) return;
@@ -233,8 +243,10 @@ export default function BlockSuiteEditor({
       const noteBlockId = noteBlockIdRef.current;
 
       const existingBlocks = doc.getBlocksByFlavour("affine:paragraph");
-      existingBlocks.forEach((block: any) => {
-        doc.deleteBlock(block);
+      existingBlocks.forEach((block: Block) => {
+        if (block.model) {
+          doc.deleteBlock(block.model);
+        }
       });
 
       let processedContent = content;
@@ -247,14 +259,25 @@ export default function BlockSuiteEditor({
         const blockData = parseHTMLToBlocks(processedContent);
 
         blockData.forEach((block) => {
-          doc.addBlock(
-            block.type,
-            {
-              text: new doc.Text(block.text),
-              ...block.props,
-            },
-            noteBlockId
-          );
+          if (block.type === "affine:paragraph") {
+            doc.addBlock(
+              "affine:paragraph",
+              {
+                text: new doc.Text(block.text),
+                ...block.props,
+              },
+              noteBlockId
+            );
+          } else if (block.type === "affine:list") {
+            doc.addBlock(
+              "affine:list",
+              {
+                text: new doc.Text(block.text),
+                ...block.props,
+              },
+              noteBlockId
+            );
+          }
         });
       } else {
         const lines = processedContent
@@ -277,7 +300,7 @@ export default function BlockSuiteEditor({
   }, [content]);
 
   return (
-    <div style={{ width: "100%", height: "100vh" }}>
+    <div className="w-2xl h-[calc(100vh-186px)] rounded-lg overflow-hidden">
       <div ref={editorRef} style={{ width: "100%", height: "100%" }} />
     </div>
   );

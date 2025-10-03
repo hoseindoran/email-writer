@@ -26,5 +26,12 @@ export default async function Email({
   const email = await getEmail(id);
 
   if (!email) notFound();
-  return <BlockSuiteWrapper emailContent={email.content} />;
+
+  return (
+    <main className="h-full flex flex-col w-xl">
+      <div className="flex-grow pb-4">
+        <BlockSuiteWrapper emailContent={email?.content} />
+      </div>
+    </main>
+  );
 }
