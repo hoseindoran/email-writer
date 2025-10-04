@@ -300,7 +300,7 @@ export default function BlockSuiteEditor({
   }, [content]);
 
   return (
-    <div className="w-2xl h-[calc(100vh-186px)] rounded-lg overflow-hidden">
+    <div className="lg:w-2xl w-md h-[calc(100vh-186px)] rounded-lg overflow-hidden">
       <div ref={editorRef} style={{ width: "100%", height: "100%" }} />
     </div>
   );

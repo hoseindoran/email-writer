@@ -105,7 +105,7 @@ export default function PromptForm({ onGenerate }: PromptFormProps) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4 p-4 bg-white rounded-lg shadow relative w-2xl"
+        className="space-y-4 p-4 bg-white rounded-lg shadow relative lg:w-2xl w-md"
       >
         <div className="grid grid-cols-3 gap-4">
           <FormField

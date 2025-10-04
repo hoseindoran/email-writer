@@ -28,7 +28,7 @@ export default async function Email({
   if (!email) notFound();
 
   return (
-    <main className="h-full flex flex-col w-xl">
+    <main className="h-full flex flex-col lg:w-2xl w-md mx-auto  p-2 md:p-4">
       <div className="flex-grow pb-4">
         <BlockSuiteWrapper emailContent={email?.content} />
       </div>

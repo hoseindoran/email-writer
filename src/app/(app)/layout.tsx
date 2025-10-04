@@ -8,10 +8,10 @@ export default function AppLayout({
 }>) {
   return (
     <SidebarProvider>
-      <main className="mx-auto">
+      <div className="flex w-full min-h-screen flex-col md:flex-row">
         <AppSidebar />
-        {children}
-      </main>
+        <main className="flex-1 mx-auto w-full">{children}</main>
+      </div>
     </SidebarProvider>
   );
 }
